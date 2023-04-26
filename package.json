@@ -1,7 +1,7 @@
 {
-  "name": "hlpplugin",
+  "name": "signalk-hlp-bms-plugin",
   "version": "1.0.0",
-  "description": "Signalk plugin to communicate with HLPdata BMS",
+  "description": "Signalk plugin to communicate with HLP-data BMS",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
