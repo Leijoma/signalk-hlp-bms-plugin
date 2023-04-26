@@ -1,27 +1,3 @@
-/*
-todo
-Stänaga av timern när pluginen avaktiveras
-Kolla att rätt antal fält är parsade. Hur hantera flera tempgivare?
-Kolla efter extrema värden som ett resultat av parsning
-  Lagra förra värdet om nya mekes sense ersätt gamla och skicka till signal k annars skippa
-  ta varje värde för sig och gör reality check tex laddning kan bara vara 0 eller 1. Så fort något värde avviker skippa hela meddelandet
-Ställa om så att soc och soc now delas med 100
-
-done
-v1,v2,v3,v4,current,soc,chargeoff,loadoff,vbat2,socnow,
-todo
-adj,beep,led,temp1,temp2...
-
-och kan då ut så här:
-
-0.001,-0.001,0.000,0.000,-1.157,50,1,0,0.000,50,0.000,4,0,a1 18m1
-
-
-installation
-körde  npm link hlpplugin i .signalk/node_modules för att installera 
-Slutade att fungera när jag installerade annan plugin
-Gjorde ett entry i signalk package.json någon skillnad?
-*/
 
 const serial = require('./lib/serial')
 
@@ -92,6 +68,123 @@ function parseMessage(message) {
       lastItems=items
       var voltage=Number(items[0])+Number(items[1])+Number(items[2])+Number(items[3])
       console.log("Data OK") 
+      app.handleMessage('signalk-hlp-bms-plugin', {
+        updates :[ 
+           {
+           "meta": [
+                  {
+                  "path": "electrical.bms.lipo1.voltage",
+                  "value": {
+                      "description": "LiFePo4 cell 1 voltage",
+                      "units": "V",
+                      "displayName": "Cell 1 Voltage",
+                      "timeout": 30
+                      },
+                  },
+                  {
+                      "path": "electrical.bms.lipo2.voltage",
+                      "value": {
+                        "description": "LiFePo4 cell 2 voltage",
+                        "units": "V",
+                        "displayName": "Cell 2 Voltage",
+                        "timeout": 30
+                        },
+                  },
+                  {
+                      "path": "electrical.bms.lipo3.voltage",
+                      "value": {
+                        "description": "LiFePo4 cell 3 voltage",
+                        "units": "V",
+                        "displayName": "Cell 3 Voltage",
+                        "timeout": 30
+                        },
+                  },
+                  {
+                      "path": "electrical.bms.lipo4.voltage",
+                      "value": {
+                        "description": "LiFePo4 cell 4 voltage",
+                        "units": "V",
+                        "displayName": "Cell 4 Voltage",
+                        "timeout": 30
+                        },
+                  },
+                  {
+                    "path": "electrical.bms.shunt.current",
+                    "value": {
+                    "description": "BMS shunt current",
+                    "units": "A",
+                    "displayName": "BMS current",
+                    "timeout": 30
+                    },
+                    },
+                    {
+                      "path": "electrical.bms.voltage",
+                      "value": {
+                      "description": "BMS voltage",
+                      "units": "V",
+                      "displayName": "BMS voltage",
+                      "timeout": 30
+                      },
+                    },
+                    {
+                      "path": "electrical.bms.soc",
+                      "value": {
+                      "description": "BMS SOC",
+                      "units": "%",
+                      "displayName": "BMS SOC",
+                      "timeout": 30
+                      },
+                  },
+                  {
+                    "path": "electrical.bms.charge.onoff",
+                    "value": {
+                    "description": "Charge on/off",
+                    "units": "",
+                    "displayName": "Charge on/off",
+                    "timeout": 30
+                    },
+                },
+                {
+                  "path": "electrical.bms.loadoff",
+                  "value": {
+                  "description": "Load on/off",
+                  "units": "",
+                  "displayName": "Load on/off",
+                  "timeout": 30
+                  },
+              },
+              {
+                  "path": "electrical.bms.battery2.voltage",
+                  "value": {
+                  "description": "BMS aux battery voltage",
+                  "units": "V",
+                  "displayName": "Starter Voltage",
+                  "timeout": 30
+                  },
+              },
+              {
+                "path": "electrical.bms.socnow",
+                "value": {
+                "description": "BMS SOC now",
+                "units": "V",
+                "displayName": "BMSD SOC now",
+                "timeout": 30
+                },
+            },
+            {
+              "path": "electrical.bms.battery.temperature",
+              "value": {
+              "description": "BMS temp 1",
+              "units": "°",
+              "displayName": "BMS temp 1",
+              "timeout": 30
+              },
+             }      
+            ]
+          }
+        ]
+      });
+
       app.handleMessage('hlp-data-bms', {
         updates: [
           {
@@ -198,3 +291,126 @@ function parseMessage(message) {
 
   return plugin;
 };
+
+
+
+/*
+
+  app.handleMessage('signalk-hlp-bms-plugin', {
+        updates :[ 
+           {
+           "meta": [
+                  {
+                  "path": "electrical.bms.lipo1.voltage",
+                  "value": {
+                      "description": "LiFePo4 cell 1 voltage",
+                      "units": "V",
+                      "displayName": "Cell 1 Voltage",
+                      "timeout": 30
+                      },
+                  },
+                  {
+                      "path": "electrical.bms.lipo2.voltage",
+                      "value": {
+                        "description": "LiFePo4 cell 2 voltage",
+                        "units": "V",
+                        "displayName": "Cell 2 Voltage",
+                        "timeout": 30
+                        },
+                  },
+                  {
+                      "path": "electrical.bms.lipo3.voltage",
+                      "value": {
+                        "description": "LiFePo4 cell 3 voltage",
+                        "units": "V",
+                        "displayName": "Cell 3 Voltage",
+                        "timeout": 30
+                        },
+                  },
+                  {
+                      "path": "electrical.bms.lipo4.voltage",
+                      "value": {
+                        "description": "LiFePo4 cell 4 voltage",
+                        "units": "V",
+                        "displayName": "Cell 4 Voltage",
+                        "timeout": 30
+                        },
+                  },
+                  {
+                    "path": "electrical.bms.shunt.current",
+                    "value": {
+                    "description": "BMS shunt current",
+                    "units": "A",
+                    "displayName": "BMS current",
+                    "timeout": 30
+                    },
+                    },
+                    {
+                      "path": "electrical.bms.voltage",
+                      "value": {
+                      "description": "BMS voltage",
+                      "units": "V",
+                      "displayName": "BMS voltage",
+                      "timeout": 30
+                      },
+                    },
+                    {
+                      "path": "electrical.bms.soc",
+                      "value": {
+                      "description": "BMS SOC",
+                      "units": "%",
+                      "displayName": "BMS SOC",
+                      "timeout": 30
+                      },
+                  },
+                  {
+                    "path": "electrical.bms.charge.onoff",
+                    "value": {
+                    "description": "Charge on/off",
+                    "units": "",
+                    "displayName": "Charge on/off",
+                    "timeout": 30
+                    },
+                },
+                {
+                  "path": "electrical.bms.loadoff",
+                  "value": {
+                  "description": "Load on/off",
+                  "units": "",
+                  "displayName": "Load on/off",
+                  "timeout": 30
+                  },
+              },
+              {
+                  "path": "electrical.bms.battery2.voltage",
+                  "value": {
+                  "description": "BMS aux battery voltage",
+                  "units": "V",
+                  "displayName": "Starter Voltage",
+                  "timeout": 30
+                  },
+              },
+              {
+                "path": "electrical.bms.socnow",
+                "value": {
+                "description": "BMS SOC now",
+                "units": "V",
+                "displayName": "BMSD SOC now",
+                "timeout": 30
+                },
+            },
+            {
+              "path": "electrical.bms.battery.temperature",
+              "value": {
+              "description": "BMS temp 1",
+              "units": "°",
+              "displayName": "BMS temp 1",
+              "timeout": 30
+              },
+             }      
+            ]
+          }
+        ]
+      });
+
+*/
