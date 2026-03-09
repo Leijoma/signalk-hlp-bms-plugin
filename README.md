@@ -13,6 +13,7 @@ SignalK plugin to communicate with HLP-data BMS (Battery Management System) via 
 - Configurable zones for notifications
 - Support for auxiliary battery (AGM)
 - Wait-for-response system to handle BMS communication delays
+- **Control API**: Mute alarm buzzer and control charging via REST endpoints
 
 ## Installation
 
@@ -61,6 +62,68 @@ The plugin automatically creates SignalK notifications based on configured zones
 - **Temperature warnings**: Overheating detection
 - **Cell imbalance alerts**: Uneven cell voltages
 - **Current warnings**: Excessive charge/discharge rates
+
+## Control API
+
+The plugin provides REST API endpoints for controlling the BMS:
+
+### Mute Alarm Buzzer
+
+Mutes the BMS alarm buzzer when an alarm is active.
+
+**Endpoint:** `POST /plugins/hlp-monitor-3/mute`
+
+**Example:**
+```bash
+curl -X POST http://localhost:3000/plugins/hlp-monitor-3/mute
+```
+
+**Response:**
+```json
+{
+  "status": "ok",
+  "message": "Buzzer mute command sent"
+}
+```
+
+### Charge Control
+
+Controls the BMS charge function (enable/disable charging).
+
+**Endpoint:** `POST /plugins/hlp-monitor-3/charge`
+
+**Request Body:**
+```json
+{
+  "value": true
+}
+```
+
+- `value: true` - Enable charging (sends `bp=7` command to BMS)
+- `value: false` - Disable charging (sends `bp=6` command to BMS)
+
+**Example:**
+```bash
+# Enable charging
+curl -X POST http://localhost:3000/plugins/hlp-monitor-3/charge \
+  -H "Content-Type: application/json" \
+  -d '{"value": true}'
+
+# Disable charging
+curl -X POST http://localhost:3000/plugins/hlp-monitor-3/charge \
+  -H "Content-Type: application/json" \
+  -d '{"value": false}'
+```
+
+**Response:**
+```json
+{
+  "status": "ok",
+  "command": "bp=7"
+}
+```
+
+**Note:** These commands require the serial port to be open and connected to the BMS. If the port is not available, you will receive a `503 Service Unavailable` error.
 
 ## Version History
 
