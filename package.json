@@ -1,18 +1,43 @@
 {
-  "name": "signalk-hlp-bms-plugin",
-  "version": "1.2.1",
-  "description": "Signalk plugin to communicate with HLP-data BMS",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "signalk-node-server-plugin",
-    "signalk-category-hardware"
-  ],
-  "author": "Magnus",
-  "license": "ISC",
-  "dependencies": {
-    "serialport": "^10.5.0"
+    "name": "hlp-monitor-3",
+    "version": "1.2.4",
+    "description": "A plugin to communicate with HLP BMS",
+    "main": "index.js",
+    "keywords": [
+      "signalk-node-server-plugin",
+      "signalk",
+      "marine",
+      "boat"
+    ],
+    "author": "magnus@leijonborg.se",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/yourusername/signalk-my-basic-plugin.git"
+    },
+    "bugs": {
+      "url": "https://github.com/yourusername/signalk-my-basic-plugin/issues"
+    },
+    "homepage": "https://github.com/yourusername/signalk-my-basic-plugin#readme",
+    "engines": {
+      "node": ">=12.0.0"
+    },
+    "signalk-plugin-config": {
+      "plugin": {
+        "id": "hlp-monitor-3",
+        "name": "HLP monitor plugin V3"
+      }
+    },
+    "dependencies": {
+        "serialport": "^10.5.0",
+        "@serialport/parser-readline": "^10.5.0"
+      },
+    
+    "devDependencies": {
+      "eslint": "^8.0.0"
+    },
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "lint": "eslint ."
+    }
   }
-}

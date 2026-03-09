@@ -1,12 +1,90 @@
 # signalk-hlp-bms-plugin
 
-The plugin reads  data from the HLP BMS and publish it as signalK paths. 
+SignalK plugin to communicate with HLP-data BMS (Battery Management System) via serial connection.
 
-There are still things to do:
-- make the parsing of temperatures more robust and allow for multiple temperarute sensors
-- include a setting to let the user select path name(s)
-- replace console.log commands to debug commands or remove consooe comands in serial.js
+## Features
 
+- Reads battery data from HLP BMS over serial port
+- Publishes data as SignalK paths
+- Supports multiple battery cells monitoring
+- Temperature monitoring (battery, motor, alternator)
+- State of Charge (SOC) calculation (instant and average)
+- Cell voltage balancing monitoring
+- Configurable zones for notifications
+- Support for auxiliary battery (AGM)
+- Wait-for-response system to handle BMS communication delays
 
-Fixed since last Release 
-- add meta data so correct units are sent to signalK
+## Installation
+
+```bash
+cd ~/.signalk
+npm install signalk-hlp-bms-plugin
+```
+
+## Configuration
+
+Configure the plugin through SignalK admin interface:
+
+- **Serial Port**: Path to serial device (e.g., `/dev/ttyUSB0`)
+- **Baud Rate**: 9600 (default for HLP BMS)
+- **Poll Interval**: How often to query the BMS (milliseconds)
+- **Battery Chemistry**: LiFePO4 or AGM (affects zone settings)
+- **Zone Settings**: Configure voltage, temperature, current thresholds for notifications
+
+## SignalK Paths
+
+The plugin publishes data to the following SignalK paths:
+
+### Battery Data
+- `electrical.bms.voltage` - Total battery voltage (V)
+- `electrical.bms.current` - Battery current (A)
+- `electrical.bms.cellVoltage.1-4` - Individual cell voltages (V)
+- `electrical.bms.unbalance` - Voltage difference between highest and lowest cell (V)
+
+### State of Charge
+- `electrical.bms.soc.instant` - Instantaneous SOC (ratio 0-1)
+- `electrical.bms.soc.average` - Average SOC (ratio 0-1)
+
+### Temperature
+- `electrical.bms.temperature.battery` - Battery temperature (K)
+- `electrical.bms.temperature.motor` - Motor temperature (K)
+- `electrical.bms.temperature.generator` - Alternator/generator temperature (K)
+
+### Auxiliary Battery
+- `electrical.bms.battery2.voltage` - Auxiliary battery voltage (V)
+
+## Notifications
+
+The plugin automatically creates SignalK notifications based on configured zones:
+
+- **Voltage alarms**: Low/high battery voltage
+- **Temperature warnings**: Overheating detection
+- **Cell imbalance alerts**: Uneven cell voltages
+- **Current warnings**: Excessive charge/discharge rates
+
+## Version History
+
+### v1.2.4 (2026-03-09)
+- Fixed BMS response detection for po command
+- Improved wait-for-response system
+- Better handling of BMS communication timeouts
+
+### v1.2.3
+- Added wait-for-response system to handle BMS not responding to every command
+- Improved serial communication reliability
+
+### v1.2.2
+- Added AGM battery support for auxiliary battery
+- Configurable zones for different battery chemistries
+
+### v1.2.1
+- Added notification zones
+- Improved meta data
+
+## License
+
+ISC
+
+## Author
+
+Magnus Leijonborg
